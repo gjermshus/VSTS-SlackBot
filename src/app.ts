@@ -1,15 +1,15 @@
 import { IVSTSBotConfig } from "./interfaces/IVSTSBotConfig";
 import { VSTSBot } from "./lib/VSTSBot";
-import * as fs from "fs"
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 
 console.log("VSTS bot is starting");
 
-
 let config: IVSTSBotConfig;
 
-if (fs.existsSync("config.json"))
-{
-    config = JSON.parse("config.json");
+if (existsSync(join(__dirname,"config.json"))) {
+    let fileContent: string = readFileSync(join(__dirname, "config.json"), "utf8");
+    config = JSON.parse(fileContent);
 }
 
 config.BotName = process.env.BotName || config.BotName;
