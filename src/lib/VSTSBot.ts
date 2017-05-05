@@ -25,7 +25,10 @@ export class VSTSBot extends Bot {
     }
 
     private onStart(): void {
-        this.user = super.getUsers()._value.members.filter(f => f.name === this.name)[0];
+        this.user = super.getUsers()._value.members.filter(f => f.name.toLowerCase() === this.name)[0];
+        if (this.user === undefined) {
+            throw new Error("Bot user not found in Slack team directory, have you spelled my name right?");
+        }
         return;
     }
 
