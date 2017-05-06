@@ -1,4 +1,4 @@
-import { ISlackField } from "./ISlackField"
+import { ISlackField } from "./ISlackField";
 
 export interface ISlackAttachment {
     fallback?: string;
@@ -10,10 +10,15 @@ export interface ISlackAttachment {
     title?: string;
     title_link?: string;
     text?: string;
-    fields?: ISlackField;
+    fields?: Array<ISlackField>;
     image_url?: string;
     thumb_url?: string;
     footer?: string;
     footer_icon?: string;
     ts?: number;
+    mrkdwn_in?: Array<string>;
+}
+
+export interface ISlackAttachments {
+    attachments: Array<ISlackAttachment>;
 }

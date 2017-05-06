@@ -3,7 +3,7 @@ import { VSTSBot } from "./lib/VSTSBot";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 
-console.log("VSTS bot is starting");
+console.log("VSTSBot is starting");
 
 let config: IVSTSBotConfig;
 

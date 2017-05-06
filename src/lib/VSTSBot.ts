@@ -1,6 +1,5 @@
 import * as Bot from "slackbots";
-import { ISlackAttachment } from "../interfaces/ISlackAttachment";
-import { ISlackField } from "../interfaces/ISlackField";
+import { ISlackAttachment, ISlackAttachments } from "../interfaces/ISlackAttachment";
 import { IVSTSBotConfig } from "../interfaces/IVSTSBotConfig";
 import { ISlackMessage } from "../interfaces/ISlackMessage";
 import { VSTSService } from "./VSTSService";
@@ -37,34 +36,75 @@ export class VSTSBot extends Bot {
         !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
 
                 let witIds: Array<number> = this.extractWitId(message.text);
-                let channelName: any = this.GetChannelById(message.channel);
+                console.log("Message received");
+                let attachments: Array<ISlackAttachment> = new Array<ISlackAttachment>();
 
                 for (let witId of witIds) {
                     try {
+                        console.log("Looking up Work Item with Id: " + witId);
                         let wit: WorkItem = await this.vsts.GetWorkItem(witId);
-                        let state: string = wit.fields["System.State"];
-                        let title: string = wit.fields["System.Title"];
-                        let cb: string = wit.fields["System.CreatedBy"].replace(/<[^>]+>/g, "");
-                        let at: string = (wit.fields["System.AssignedTo"]) == null ?
-                                        "Unassigned" : wit.fields["System.AssignedTo"].replace(/<[^>]+>/g, "");
-                        let ap: string = wit.fields["System.AreaPath"];
                         let t: string = wit.fields["System.WorkItemType"] === "Bug" ?
                         "cc293d" : wit.fields["System.WorkItemType"] === "Task" ? "f2cb1d" : "009ccc";
-                        let type: string = wit.fields["System.WorkItemType"];
-                        let msg: string = `>>> *${type}*: #${wit.id}, *State*: ${state} 
-    *AreaPath*: ${ap}\n
-    *Title* : ${title}\n
-    *Assigned to*: ${at}, *Created By*: ${cb}\n
-    *View / Edit ${type}* : 
-    https://${this.config.VSTSDomain}.visualstudio.com/${this.config.VSTSTeamProject}/_workitems/edit/${wit.id}`;
+
                         let msgAttachment: ISlackAttachment = {
-                            color: "#" + t
+                            color: "#" + t,
+                            title_link:
+                            `https://${this.config.VSTSDomain}.visualstudio.com/${this.config.VSTSTeamProject}/_workitems/edit/${wit.id}`,
+                            title: wit.fields["System.Title"],
+                            mrkdwn_in: ["text"],
+                            fields: [
+                                {
+                                    title: "Type",
+                                    value: wit.fields["System.WorkItemType"],
+                                    short: true
+                                },
+                                {
+                                    title: "Id",
+                                    value: witId,
+                                    short: true
+                                },
+                                {
+                                    title: "State",
+                                    value: wit.fields["System.State"],
+                                    short: true
+                                },
+                                {
+                                    title: "Tags",
+                                    value: wit.fields["System.Tags"],
+                                    short: true
+                                },
+                                {
+                                    title: "Area Path",
+                                    value: wit.fields["System.AreaPath"],
+                                    short: true
+                                },
+                                {
+                                    title: "Iteration Path",
+                                    value: wit.fields["System.IterationPath"],
+                                    short: true
+                                },
+                                {
+                                    title: "Created By",
+                                    value: wit.fields["System.CreatedBy"].replace(/<[^>]+>/g, ""),
+                                    short: true
+                                },
+                                {
+                                    title: "Assigned To",
+                                    value:  (wit.fields["System.AssignedTo"]) == null ?
+                                        "Unassigned" : wit.fields["System.AssignedTo"].replace(/<[^>]+>/g, ""),
+                                    short: true
+                                },
+                            ]
                         };
-                        super.postMessageToChannel(channelName.name, msg, {attachments: msgAttachment});
+
+                        attachments.push(msgAttachment);
                     } catch (exception) {
                         return;
                     }
                 }
+
+                let attachmentsContainer: ISlackAttachments = {attachments: attachments};
+                super.postMessage(message.channel, "", attachmentsContainer);
         }
 
         return;

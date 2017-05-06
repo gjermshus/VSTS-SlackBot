@@ -1,6 +1,5 @@
-export interface IVSTSBotConfig
-{
-    BotName: string; 
+export interface IVSTSBotConfig {
+    BotName: string;
     SlackToken: string;
     VSTSUsername: string;
     VSTSPassword: string;
