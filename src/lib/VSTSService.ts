@@ -12,10 +12,10 @@ export class VSTSService {
 
     constructor (config: IVSTSBotConfig) {
         this.collectionUrl = this.collectionUrl.replace("{VSTSDomain}", config.VSTSDomain);
-        if (config.VSTSToken) {
-            this.authHandler = vsts.getPersonalAccessTokenHandler(config.VSTSToken);
-        } else {
+        if (config.VSTSToken === undefined || config.VSTSToken === "") {
             this.authHandler = vsts.getBasicHandler(config.VSTSUsername, config.VSTSPassword);
+        } else {
+            this.authHandler = vsts.getPersonalAccessTokenHandler(config.VSTSToken);
         }
         
         this.connect = new vsts.WebApi(this.collectionUrl, this.authHandler);
