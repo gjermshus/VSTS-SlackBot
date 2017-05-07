@@ -19,5 +19,7 @@ config.VSTSUsername = process.env.VSTSUsername || config.VSTSUsername;
 config.VSTSPassword = process.env.VSTSPassword || config.VSTSPassword;
 config.VSTSDomain = process.env.VSTSDomain || config.VSTSDomain;
 
+config.VSTSToken = process.env.VSTSToken || config.VSTSToken;
+
 var bot: VSTSBot = new VSTSBot(config);
 bot.Run();

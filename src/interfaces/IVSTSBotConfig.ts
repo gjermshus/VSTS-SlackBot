@@ -6,4 +6,5 @@ export interface IVSTSBotConfig
     VSTSPassword: string;
     VSTSTeamProject: string;
     VSTSDomain: string;
+    VSTSToken: string
 }
