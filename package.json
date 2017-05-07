@@ -1,0 +1,19 @@
+{
+  "name": "vstsbot",
+  "version": "1.0.0",
+  "description": "VSTS SlackBot",
+  "main": "app.js",
+  "author": "Anders Gjermshus",
+  "license": "MIT",
+  "dependencies": {
+    "slackbots": "1.0.2",
+    "vso-node-api": "^5.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.2",
+    "gulp": "3.9.1",
+    "gulp-typescript": "3.1.6", 
+    "gulp-sourcemaps": "2.5.0",
+    "@types/node": "^7.0.18"
+  }
+}
