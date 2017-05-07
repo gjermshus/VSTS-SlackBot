@@ -32,7 +32,7 @@ export class VSTSBot extends Bot {
     }
 
     private async onMessage(message: ISlackMessage): Promise<void> {
-        if (this.isChatMessage(message) &&  this.isChannelConversation(message) &&
+        if (this.isChatMessage(message) && (this.isChannelConversation(message) || this.isPrivateMessage(message)) &&
         !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
 
                 let witIds: Array<number> = this.extractWitId(message.text);
@@ -104,6 +104,7 @@ export class VSTSBot extends Bot {
                 }
 
                 let attachmentsContainer: ISlackAttachments = {attachments: attachments};
+                console.log("Posting message");
                 super.postMessage(message.channel, "", attachmentsContainer);
         }
 
@@ -119,7 +120,10 @@ export class VSTSBot extends Bot {
         let m: string[] = message.match(/#(\d+)/g);
         let res: Array<number> = new Array<number>();
         for (let element of m) {
-            res.push(Number(element.replace("#", "")));
+            let n: number = Number(element.replace("#", ""));
+            if (res.indexOf(n) === -1) {
+                res.push(Number(element.replace("#", "")));
+            }
         }
         return res;
     }
@@ -136,7 +140,7 @@ export class VSTSBot extends Bot {
         return message.is_bot || message.user === this.user.id || Boolean(message.bot_id);
     }
 
-    private GetChannelById(channelId: string | number): string {
-        return super.getChannels()._value.channels.filter(ch => ch.id === channelId)[0];
+    private  isPrivateMessage(message) {
+        return typeof message.channel === "string" && message.channel[0] === "D";
     }
 };
