@@ -1,11 +1,11 @@
 FROM mhart/alpine-node:latest
 
-RUN npm install -g gulp-cli
 
 COPY . /vstsbotsrc
-RUN cd /vstsbotsrc; npm install --production
+RUN cd /vstsbotsrc
+RUN npm install gulp-cli gulp gulp-typescript gulp-sourcemaps typescript
+RUN npm install --production
 
-RUN npm install gulp gulp-typescript gulp-sourcemaps
 WORKDIR /vstsbotsrc
 
 RUN gulp
