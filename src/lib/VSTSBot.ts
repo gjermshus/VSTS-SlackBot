@@ -32,8 +32,8 @@ export class VSTSBot extends Bot {
     }
 
     private async onMessage(message: ISlackMessage): Promise<void> {
-        if (this.isChatMessage(message) && (this.isChannelConversation(message) || this.isPrivateMessage(message)) &&
-        !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
+        if (this.isChatMessage(message) && (this.isChannelConversation(message) || this.isPrivateMessage(message)
+        || this.isGroupMessage(message)) && !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
 
                 let witIds: Array<number> = this.extractWitId(message.text);
                 console.log("Message received");
@@ -140,7 +140,11 @@ export class VSTSBot extends Bot {
         return message.is_bot || message.user === this.user.id || Boolean(message.bot_id);
     }
 
-    private  isPrivateMessage(message) {
+    private  isPrivateMessage(message: ISlackMessage): boolean {
         return typeof message.channel === "string" && message.channel[0] === "D";
+    }
+
+    private isGroupMessage(message: ISlackMessage): boolean {
+        return typeof message.channel === "string" && message.channel[0] === "G";
     }
 };
