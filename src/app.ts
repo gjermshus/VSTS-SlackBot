@@ -1,25 +1,26 @@
 import { IVSTSBotConfig } from "./interfaces/IVSTSBotConfig";
 import { VSTSBot } from "./lib/VSTSBot";
-import * as fs from "fs"
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 
-console.log("VSTS bot is starting");
-
+console.log("VSTSBot is starting");
 
 let config: IVSTSBotConfig;
 
-if (fs.existsSync("config.json"))
-{
-    config = JSON.parse("config.json");
+if (existsSync(join(__dirname,"config.json"))) {
+    let fileContent: string = readFileSync(join(__dirname, "config.json"), "utf8");
+    config = JSON.parse(fileContent);
 }
 
-config.BotName = process.env.BotName || config.BotName;
-config.SlackToken = process.env.SlackToken || config.SlackToken;
-config.VSTSTeamProject = process.env.VSTSTeamProject || config.VSTSTeamProject;
-config.VSTSUsername = process.env.VSTSUsername || config.VSTSUsername;
-config.VSTSPassword = process.env.VSTSPassword || config.VSTSPassword;
-config.VSTSDomain = process.env.VSTSDomain || config.VSTSDomain;
+let runConfig: IVSTSBotConfig = {
+    BotName: process.env.BotName || config.BotName,
+    SlackToken: process.env.SlackToken || config.SlackToken,
+    VSTSTeamProject: process.env.VSTSTeamProject || config.VSTSTeamProject,
+    VSTSUsername: process.env.VSTSUsername || config.VSTSUsername,
+    VSTSPassword: process.env.VSTSPassword || config.VSTSPassword,
+    VSTSDomain: process.env.VSTSDomain || config.VSTSDomain,
+    VSTSToken: process.env.VSTSToken || config.VSTSToken
+};
 
-config.VSTSToken = process.env.VSTSToken || config.VSTSToken;
-
-var bot: VSTSBot = new VSTSBot(config);
+var bot: VSTSBot = new VSTSBot(runConfig);
 bot.Run();

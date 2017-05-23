@@ -1,3 +1,3 @@
-export interface IOSRBotSettings {
+export interface IVSTSBotSettings {
     name: string;
 }

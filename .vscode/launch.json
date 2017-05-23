@@ -10,16 +10,8 @@
             "cwd": "${workspaceRoot}",
             "name": "Launch Program",
             "sourceMaps": true,
-            "outFiles": ["${workspaceRoot}\\output", "${workspaceRoot}\\maps"]
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach to Process",
-            "address": "localhost",
-            "port": 5858,
-            "outFiles":  ["${workspaceRoot}\\output", "${workspaceRoot}\\maps"],
-            "sourceMaps": true
+            "outFiles": ["${workspaceRoot}/output/**/*.js"],
+            "program": "${workspaceRoot}/src/app.ts"
         }
     ]
 }
