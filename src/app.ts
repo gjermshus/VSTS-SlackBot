@@ -18,7 +18,8 @@ let runConfig: IVSTSBotConfig = {
     VSTSTeamProject: process.env.VSTSTeamProject || config.VSTSTeamProject,
     VSTSUsername: process.env.VSTSUsername || config.VSTSUsername,
     VSTSPassword: process.env.VSTSPassword || config.VSTSPassword,
-    VSTSDomain: process.env.VSTSDomain || config.VSTSDomain
+    VSTSDomain: process.env.VSTSDomain || config.VSTSDomain,
+    VSTSToken: process.env.VSTSToken || config.VSTSToken
 };
 
 var bot: VSTSBot = new VSTSBot(runConfig);
