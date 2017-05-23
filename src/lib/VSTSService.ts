@@ -1,7 +1,7 @@
 import * as vsts from "vso-node-api";
 import * as ba from "vso-node-api/WorkItemTrackingApi";
 import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import * as witI from "vso-node-api/interfaces/WorkItemTrackingInterfaces";  
+import * as witI from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
 import { IVSTSBotConfig } from "../interfaces/IVSTSBotConfig";
 
 export class VSTSService {
@@ -17,7 +17,7 @@ export class VSTSService {
         } else {
             this.authHandler = vsts.getPersonalAccessTokenHandler(config.VSTSToken);
         }
-        
+
         this.connect = new vsts.WebApi(this.collectionUrl, this.authHandler);
         this.vsts = this.connect.getWorkItemTrackingApi();
     }
