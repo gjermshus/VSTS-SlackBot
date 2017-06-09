@@ -10,9 +10,26 @@ export class VSTSBot extends Bot {
     private name: string;
     private vsts: VSTSService;
     private config: IVSTSBotConfig;
+    private _colors = {
+        "Bug": "cc293d",
+        "Epic": "ff7b00",
+        "Feature": "773b93",
+        "Impediment": "b4009e",
+        "Change Request": "b4009e",
+        "Review": "b4009e",
+        "Risk": "b4009e",
+        "Issue": "b4009e",
+        "Product Backlog Item": "009ccc",
+        "User Story": "009ccc",
+        "Requirement": "009ccc",
+        "Task": "f2cb1d",
+        "Test Case": "004b50",
+        "Test Plan": "004b50",
+        "Test Suite": "004b50",
+    };
 
     constructor(config: IVSTSBotConfig) {
-        super({token: config.SlackToken, name: config.BotName});
+        super({ token: config.SlackToken, name: config.BotName });
         this.vsts = new VSTSService(config);
         this.name = config.BotName.toLowerCase();
         this.config = config;
@@ -33,79 +50,79 @@ export class VSTSBot extends Bot {
 
     private async onMessage(message: ISlackMessage): Promise<void> {
         if (this.isChatMessage(message) && (this.isChannelConversation(message) || this.isPrivateMessage(message)
-        || this.isGroupMessage(message)) && !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
+            || this.isGroupMessage(message)) && !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
 
-                let witIds: Array<number> = this.extractWitId(message.text);
-                console.log("Message received");
-                let attachments: Array<ISlackAttachment> = new Array<ISlackAttachment>();
+            let witIds: Array<number> = this.extractWitId(message.text);
+            console.log("Message received");
+            let attachments: Array<ISlackAttachment> = new Array<ISlackAttachment>();
 
-                for (let witId of witIds) {
-                    try {
-                        console.log("Looking up Work Item with Id: " + witId);
-                        let wit: WorkItem = await this.vsts.GetWorkItem(witId);
-                        let t: string = wit.fields["System.WorkItemType"] === "Bug" ?
-                        "cc293d" : wit.fields["System.WorkItemType"] === "Task" ? "f2cb1d" : "009ccc";
+            for (let witId of witIds) {
+                try {
+                    console.log("Looking up Work Item with Id: " + witId);
+                    let wit: WorkItem = await this.vsts.GetWorkItem(witId);
+                    let t: string = wit.fields["System.WorkItemType"] in this._colors
+                        ? this._colors[wit.fields["System.WorkItemType"]] : "009ccc";
 
-                        let msgAttachment: ISlackAttachment = {
-                            color: "#" + t,
-                            title_link:
-                            `https://${this.config.VSTSDomain}.visualstudio.com/${this.config.VSTSTeamProject}/_workitems/edit/${wit.id}`,
-                            title: wit.fields["System.Title"],
-                            mrkdwn_in: ["text"],
-                            fields: [
-                                {
-                                    title: "Type",
-                                    value: wit.fields["System.WorkItemType"],
-                                    short: true
-                                },
-                                {
-                                    title: "Id",
-                                    value: witId,
-                                    short: true
-                                },
-                                {
-                                    title: "State",
-                                    value: wit.fields["System.State"],
-                                    short: true
-                                },
-                                {
-                                    title: "Tags",
-                                    value: wit.fields["System.Tags"],
-                                    short: true
-                                },
-                                {
-                                    title: "Area Path",
-                                    value: wit.fields["System.AreaPath"],
-                                    short: true
-                                },
-                                {
-                                    title: "Iteration Path",
-                                    value: wit.fields["System.IterationPath"],
-                                    short: true
-                                },
-                                {
-                                    title: "Created By",
-                                    value: wit.fields["System.CreatedBy"].replace(/<[^>]+>/g, ""),
-                                    short: true
-                                },
-                                {
-                                    title: "Assigned To",
-                                    value:  (wit.fields["System.AssignedTo"]) == null ?
-                                        "Unassigned" : wit.fields["System.AssignedTo"].replace(/<[^>]+>/g, ""),
-                                    short: true
-                                },
-                            ]
-                        };
+                    let msgAttachment: ISlackAttachment = {
+                        color: "#" + t,
+                        title_link:
+                        `https://${this.config.VSTSDomain}.visualstudio.com/${this.config.VSTSTeamProject}/_workitems/edit/${wit.id}`,
+                        title: wit.fields["System.Title"],
+                        mrkdwn_in: ["text"],
+                        fields: [
+                            {
+                                title: "Type",
+                                value: wit.fields["System.WorkItemType"],
+                                short: true
+                            },
+                            {
+                                title: "Id",
+                                value: witId,
+                                short: true
+                            },
+                            {
+                                title: "State",
+                                value: wit.fields["System.State"],
+                                short: true
+                            },
+                            {
+                                title: "Tags",
+                                value: wit.fields["System.Tags"],
+                                short: true
+                            },
+                            {
+                                title: "Area Path",
+                                value: wit.fields["System.AreaPath"],
+                                short: true
+                            },
+                            {
+                                title: "Iteration Path",
+                                value: wit.fields["System.IterationPath"],
+                                short: true
+                            },
+                            {
+                                title: "Created By",
+                                value: wit.fields["System.CreatedBy"].replace(/<[^>]+>/g, ""),
+                                short: true
+                            },
+                            {
+                                title: "Assigned To",
+                                value: (wit.fields["System.AssignedTo"]) == null ?
+                                    "Unassigned" : wit.fields["System.AssignedTo"].replace(/<[^>]+>/g, ""),
+                                short: true
+                            },
+                        ]
+                    };
 
-                        attachments.push(msgAttachment);
-                    } catch (exception) {
-                        return;
-                    }
+                    attachments.push(msgAttachment);
+                } catch (exception) {
+                    return;
                 }
+            }
 
-                let attachmentsContainer: ISlackAttachments = {attachments: attachments};
-                console.log("Posting message");
-                super.postMessage(message.channel, "", attachmentsContainer);
+            let attachmentsContainer: ISlackAttachments = { attachments: attachments };
+            console.log("Posting message");
+            super.postMessage(message.channel, "", attachmentsContainer);
         }
 
         return;
@@ -140,7 +157,7 @@ export class VSTSBot extends Bot {
         return message.is_bot || message.user === this.user.id || Boolean(message.bot_id);
     }
 
-    private  isPrivateMessage(message: ISlackMessage): boolean {
+    private isPrivateMessage(message: ISlackMessage): boolean {
         return typeof message.channel === "string" && message.channel[0] === "D";
     }
 
