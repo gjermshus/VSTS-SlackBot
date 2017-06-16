@@ -61,14 +61,13 @@ export class VSTSBot extends Bot {
                     console.log("Looking up Work Item with Id: " + witId);
                     let wit: WorkItem = await this.vsts.GetWorkItem(witId);
                     let t: string = wit.fields["System.WorkItemType"] in this._colors
-                        ? this._colors[wit.fields["System.WorkItemType"]] : "009ccc";
+                        ? this._colors[wit.fields["System.WorkItemType"]] : "ccc";
 
                     let msgAttachment: ISlackAttachment = {
                         color: "#" + t,
                         title_link:
-                        `https://${this.config.VSTSDomain}.visualstudio.com/${this.config.VSTSTeamProject}/_workitems/edit/${wit.id}`,
+                        `https://${this.config.VSTSDomain}.visualstudio.com/${wit.fields["System.TeamProject"]}/_workitems/edit/${wit.id}`,
                         title: wit.fields["System.Title"],
-                        mrkdwn_in: ["text"],
                         fields: [
                             {
                                 title: "Type",
@@ -164,4 +163,4 @@ export class VSTSBot extends Bot {
     private isGroupMessage(message: ISlackMessage): boolean {
         return typeof message.channel === "string" && message.channel[0] === "G";
     }
-};
+}
