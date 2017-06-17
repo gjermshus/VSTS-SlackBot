@@ -64,3 +64,6 @@ output/*
 
 # bot config file
 src/config.json
+
+# package log file
+package-lock.json
