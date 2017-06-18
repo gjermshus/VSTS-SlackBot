@@ -20,7 +20,6 @@ Use the tokens obtained to start a instance of vsts-slackbot.
 > `BotName` - Name of the bot in your Slack Directory.   
 `SlackToken` - Token obtained with access to Slack.  
 `VSTSToken` - Token obtained with access to VSTS  
-`VSTSProject` - What project in VSTS the work items belong to  
 `VSTSDomain` - The subdomain to your VSTS account
 
 Alternative for VSTS token is to user alternative user credentials. In that case switch `VSTSToken` with  
@@ -31,6 +30,6 @@ Alternative for VSTS token is to user alternative user credentials. In that case
 The following command starts a container with the vsts-slackbot. `--name` and `--restart-always` are optional.
 
 ```
- docker run -it -d --name <name> --restart=always -e BotName=<name in slack> -e SlackToken=<SlackToken> -e VSTSToken=<VSTSToken> -e VSTSTeamProject=<VSTSProject> -e VSTSDomain=<VSTSSubDomain> gjermshus/vsts-slackbot:latest
+ docker run -it -d --name <name> --restart=always -e BotName=<name in slack> -e SlackToken=<SlackToken> -e VSTSToken=<VSTSToken> -e VSTSDomain=<VSTSSubDomain> gjermshus/vsts-slackbot:latest
 
 ```
