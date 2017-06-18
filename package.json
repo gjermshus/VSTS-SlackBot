@@ -1,19 +1,25 @@
 {
   "name": "vstsbot",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "VSTS SlackBot",
   "main": "app.js",
   "author": "Anders Gjermshus",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/gjermshus/vsts-slackbot"
+  },
+  "bugs": {
+    "url": "https://github.com/gjermshus/vsts-slackbot/issues"
+  },
   "dependencies": {
-    "slackbots": "1.0.2",
+    "slackbots": "^1.0.2",
     "vso-node-api": "^5.1.2"
   },
   "devDependencies": {
-    "typescript": "^2.2.2",
-    "gulp": "3.9.1",
-    "gulp-typescript": "3.1.6", 
-    "gulp-sourcemaps": "2.5.0",
-    "@types/node": "^7.0.18"
+    "@types/node": "^7.0.31",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-typescript": "^3.1.7",
+    "typescript": "^2.3.4"
   }
 }
