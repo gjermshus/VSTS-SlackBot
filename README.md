@@ -22,7 +22,7 @@ Use the tokens obtained to start a instance of vsts-slackbot.
 `VSTSToken` - Token obtained with access to VSTS  
 `VSTSDomain` - The subdomain to your VSTS account
 
-Alternative for VSTS token is to user alternative user credentials. In that case switch `VSTSToken` with  
+Alternative for VSTS token is to use alternative user credentials. In that case switch `VSTSToken` with  
 > `VSTSUsername` - Username to VSTS account  
 `VSTSPassword` - Password set as alternative credentials for VSTS account
 
