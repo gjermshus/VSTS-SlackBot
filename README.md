@@ -26,7 +26,18 @@ Alternative for VSTS token is to use alternative user credentials. In that case 
 > `VSTSUsername` - Username to VSTS account  
 `VSTSPassword` - Password set as alternative credentials for VSTS account
 
-### Run container
+### Run standalone
+To run this bot in a console or as a standalone program a `config.json` file need to be provided at the root folder of the bot. Example of a `config.json` file
+```json
+{
+    "BotName": "",
+    "SlackToken": "",
+    "VSTSDomain": "",
+    "VSTSToken": "",
+}
+```
+
+### Run as container
 The following command starts a container with the vsts-slackbot. `--name` and `--restart-always` are optional.
 
 ```
