@@ -4,6 +4,7 @@ import { IVSTSBotConfig } from "../interfaces/IVSTSBotConfig";
 import { ISlackMessage } from "../interfaces/ISlackMessage";
 import { VSTSService } from "./VSTSService";
 import { WorkItem } from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
+import { Log } from "./Logger";
 
 export class VSTSBot extends Bot {
     private user: any;
@@ -53,12 +54,12 @@ export class VSTSBot extends Bot {
             || this.isGroupMessage(message)) && !this.isFromBot(message) && this.isVSTSMessage(message.text)) {
 
             let witIds: Array<number> = this.extractWitId(message.text);
-            console.log("Message received");
+            Log("Message received");
             let attachments: Array<ISlackAttachment> = new Array<ISlackAttachment>();
 
             for (let witId of witIds) {
                 try {
-                    console.log("Looking up Work Item with Id: " + witId);
+                    Log("Looking up Work Item with Id: " + witId);
                     let wit: WorkItem = await this.vsts.GetWorkItem(witId);
                     let t: string = wit.fields["System.WorkItemType"] in this._colors
                         ? this._colors[wit.fields["System.WorkItemType"]] : "ccc";

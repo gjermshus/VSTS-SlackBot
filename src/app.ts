@@ -2,14 +2,15 @@ import { IVSTSBotConfig } from "./interfaces/IVSTSBotConfig";
 import { VSTSBot } from "./lib/VSTSBot";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
+import { Log } from "./lib/Logger"
 
-console.log("VSTSBot is starting");
+Log("VSTSBot is starting");
 
 let config: IVSTSBotConfig = {
     BotName: "",
     SlackToken: "",
     VSTSDomain: "",
-    VSTSPassword:  "",
+    VSTSPassword: "",
     VSTSToken: "",
     VSTSUsername: ""
 };
