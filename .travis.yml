@@ -18,5 +18,5 @@ after_success:
       docker tag gjermshus/vsts-slackbot:latest gjermshus/vsts-slackbot:${VERSION}
       docker login -u="$DOCKER_USR" -p="$DOCKER_PASS"
       docker push gjermshus/vsts-slackbot:${VERSION}
-      docker push gjermshus/vsts-slackbot:latest
+      docker push gjermshus/vsts-slackbot:latest;
     fi  
