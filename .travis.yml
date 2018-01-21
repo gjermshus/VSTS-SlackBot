@@ -5,11 +5,11 @@ node_js:
 services:
   - docker
 install:
-  - npm install -g gulp gulp-cli
+  - npm install -g gulp-cli
 before_script:
   - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
 script:
-  - gulp --production
+  - gulp
 after_success:
   - if [["$TRAVIS_BRANCH" == "master"]]; then
       docker build -t gjermshus/vsts-slackbot:latest .
