@@ -8,6 +8,7 @@ install:
   - npm install gulp-cli gulp gulp-clean gulp-util
   - npm install
 before_script:
+  - echo $TRAVIS_BRANCH
   - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
 script:
   - node_modules/.bin/gulp --production
@@ -19,3 +20,7 @@ after_success:
       docker push gjermshus/vsts-slackbot:${VERSION}
       docker push gjermshus/vsts-slackbot:latest
     fi
+deploy:
+  on:
+    branch: master
+  
