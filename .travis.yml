@@ -5,7 +5,7 @@ node_js:
 services:
   - docker
 install:
-  - npm install -g gulp-cli
+  - npm install -g gulp-cli gulp gulp-clean gulp-util
 before_script:
   - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
   - npm install
