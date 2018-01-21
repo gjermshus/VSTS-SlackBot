@@ -1,7 +1,21 @@
+sudo: required
 language: node_js
 node_js:
   - "8"
-before_script:
+services:
+  - docker
+install:
   - npm install -g gulp-cli
+before_script:
+  - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
 script:
-  - gulp
+  - gulp --production
+deploy:
+  on: 
+    branch: master
+  skip_cleanup: true
+  - docker build -t gjermshus/vsts-slackbot:latest .
+  - docker tag gjermshus/vsts-slackbot:latest gjermshus/vsts-slackbot:${VERSION}
+  - docker login -u="$DOCKER_USR" -p="$DOCKER_PASS"
+  - docker push gjermshus/vsts-slackbot:${VERSION}
+  - docker push gjermshus/vsts-slackbot:latest
