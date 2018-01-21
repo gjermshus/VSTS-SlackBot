@@ -1,4 +1,4 @@
-#sudo: required
+sudo: required
 language: node_js
 node_js:
   - "8"
@@ -8,8 +8,9 @@ install:
   - npm install -g gulp-cli
 before_script:
   - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+  - npm install
 script:
-  - gulp
+  - gulp --production
 after_success:
   - if [["$TRAVIS_BRANCH" == "master"]]; then
       docker build -t gjermshus/vsts-slackbot:latest .
