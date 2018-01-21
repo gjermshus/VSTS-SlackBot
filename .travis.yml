@@ -13,14 +13,10 @@ before_script:
 script:
   - node_modules/.bin/gulp --production
 after_success:
-  - if [["$TRAVIS_BRANCH" == "master"]]; then
+  - if [[ $TRAVIS_BRANCH == "master" ]]; then
       docker build -t gjermshus/vsts-slackbot:latest .
       docker tag gjermshus/vsts-slackbot:latest gjermshus/vsts-slackbot:${VERSION}
       docker login -u="$DOCKER_USR" -p="$DOCKER_PASS"
       docker push gjermshus/vsts-slackbot:${VERSION}
       docker push gjermshus/vsts-slackbot:latest
-    fi
-deploy:
-  on:
-    branch: master
-  
+    fi  
