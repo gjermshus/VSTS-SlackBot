@@ -8,9 +8,9 @@ install:
   - npm install gulp-cli gulp gulp-clean gulp-util
   - npm install
 before_script:
-  - echo $TRAVIS_BRANCH
   - VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
 script:
+  - echo $TRAVIS_BRANCH
   - node_modules/.bin/gulp --production
 after_success:
   - if [[ $TRAVIS_BRANCH == "master" ]]; then
