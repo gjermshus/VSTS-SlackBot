@@ -20,11 +20,12 @@ script:
   - echo "Tag:" $TAG
   - echo "Commit:" $COMMIT
   - echo "Repo:" $REPO
+  - echo "Version:" $VERSION
   - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - if [ "$TRAVIS_BRANCH" == "master"]; then docker tag $REPO:$COMMIT $REPO:$VERSION
-  - if [ "$TRAVIS_BRANCH" == "master"]; then docker push $REPO; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker tag $REPO:$COMMIT $REPO:$VERSION
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker push $REPO; fi
 #after_success:
   # - if [[ $TRAVIS_BRANCH == "master" ]]; then
   #     docker build -t gjermshus/vsts-slackbot:latest .
