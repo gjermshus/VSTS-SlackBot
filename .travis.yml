@@ -26,6 +26,9 @@ after_success:
   - docker login -u $DOCKER_USR -p $DOCKER_PASS
   - export REPO=gjermshus/vsts-slackbot
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - echo "TAG:" $TAG
+  - echo "COMMIT:" $COMMIT
+  - echo "VERSION:" $VERSION
   - docker build -f Dockerfile -t $REPO:$COMMIT .
   - docker tag $REPO:$COMMIT $REPO:$TAG
   - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
