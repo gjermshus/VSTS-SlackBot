@@ -13,7 +13,19 @@ install:
 script:
   - echo $TRAVIS_BRANCH
   - node_modules/.bin/gulp --production
-after_success:
+  - docker login -u $DOCKER_USR -p $DOCKER_PASS
+  - export VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+  - export REPO=gjermshus/vsts-slackbot
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - echo "Tag:" $TAG
+  - echo "Commit:" $COMMIT
+  - echo "Repo:" $REPO
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - if [ "$TRAVIS_BRANCH" == "master"]; then docker tag $REPO:$COMMIT $REPO:$VERSION
+  - if [ "$TRAVIS_BRANCH" == "master"]; then docker push $REPO; fi
+#after_success:
   # - if [[ $TRAVIS_BRANCH == "master" ]]; then
   #     docker build -t gjermshus/vsts-slackbot:latest .
   #     docker tag gjermshus/vsts-slackbot:latest gjermshus/vsts-slackbot:${VERSION}
@@ -21,12 +33,3 @@ after_success:
   #     docker push gjermshus/vsts-slackbot:${VERSION}
   #     docker push gjermshus/vsts-slackbot:latest;
   #   fi  
-  - docker login -u $DOCKER_USR -p $DOCKER_PASS
-  - export VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
-  - export REPO=gjermshus/vsts-slackbot
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - if [ "$TRAVIS_BRANCH" == "master"]; then docker tag $REPO:$COMMIT $REPO:$VERSION
-  - if [ "$TRAVIS_BRANCH" == "master"]; then docker push $REPO; fi
