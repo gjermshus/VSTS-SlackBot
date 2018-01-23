@@ -14,6 +14,6 @@ after_success:
   - docker login -u $DOCKER_USR -p $DOCKER_PASS
   - export VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
   - export REPO=gjermshus/vsts-slackbot
-  - docker build -f Dockerfile -t $REPO:$VERSION .
-  - docker tag $REPO:$VERSION $REPO:latest
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker build -f Dockerfile -t $REPO:$VERSION .; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then docker tag $REPO:$VERSION $REPO:latest; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker push $REPO; fi
