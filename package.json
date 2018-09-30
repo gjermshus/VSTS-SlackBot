@@ -12,12 +12,12 @@
     "url": "https://github.com/gjermshus/vsts-slackbot/issues"
   },
   "dependencies": {
-    "slackbots": "^1.1.0",
-    "vso-node-api": "^6.5.0"
+    "vso-node-api": "^6.5.0",
+    "botkit": "0.6.16"
   },
   "devDependencies": {
     "@types/node": "^7.0.31",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-typescript": "^5.0.0-alpha.3",
     "typescript": "3.1.1"

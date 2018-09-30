@@ -5,4 +5,5 @@ export interface IVSTSBotConfig {
     VSTSPassword?: string;
     VSTSDomain: string;
     VSTSToken?: string;
+    DebugMode?: boolean;
 }
