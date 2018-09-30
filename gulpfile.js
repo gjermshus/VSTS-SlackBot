@@ -17,11 +17,11 @@ gulp.task("ts", () => {
 });
 
 gulp.task("copyConfig", () => {
-    return gulp.src("./src/config.json").pipe(!isProductionBuild ? gulp.dest("./output/") : util.noop());
+    return gulp.src("./src/config.test.json").pipe(!isProductionBuild ? gulp.dest("./output/config.json") : util.noop());
 });
 
 gulp.task('cleanOutput', () => {
     return gulp.src('./output').pipe(clean());
 })
 
-gulp.task("default", ['cleanOutput', "ts", "copyConfig"]);
+gulp.task("default", gulp.series('cleanOutput', "ts", "copyConfig"));
