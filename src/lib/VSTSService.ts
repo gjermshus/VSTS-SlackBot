@@ -19,7 +19,7 @@ export class VSTSService {
         }
 
         this.connect = new vsts.WebApi(this.collectionUrl, this.authHandler);
-        this.vsts = this.connect.getWorkItemTrackingApi();
+        this.connect.getWorkItemTrackingApi().then(t => this.vsts = t);
     }
 
     async GetWorkItems(witIds: number[]): Promise<witI.WorkItem[]> {
