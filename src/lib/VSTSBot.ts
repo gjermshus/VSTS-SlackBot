@@ -66,7 +66,8 @@ export class VSTSBot {
         });
 
         this._controller.on('rtm_close', (bot: Botkit.SlackBot) => {
-            Log('RTM disconnected');
+            Log('RTM disconnected, ending process');
+            process.exit(1);
         });
     }
 
