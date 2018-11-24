@@ -9,6 +9,7 @@ install:
   - npm install
 script:
   - echo $TRAVIS_BRANCH
+  - soncar-scanner
   - node_modules/.bin/gulp --production
 after_success:
   - docker login -u $DOCKER_USR -p $DOCKER_PASS
@@ -17,3 +18,8 @@ after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker build -f Dockerfile -t $REPO:$VERSION .; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker tag $REPO:$VERSION $REPO:latest; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker push $REPO; fi
+addons:
+  sonarcloud:
+    organization: "gjermshus-github"
+    token:
+      secure: $SONAR_TOKEN
