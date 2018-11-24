@@ -8,4 +8,4 @@ export interface ISlackMessage {
     user: string;
     bot_id: string;
     is_bot: boolean;
-};
+}
