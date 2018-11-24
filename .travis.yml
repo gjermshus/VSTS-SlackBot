@@ -9,11 +9,11 @@ install:
   - npm install
 script:
   - echo $TRAVIS_BRANCH
-  - sonar-scanner
+  - export VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+  - sonar-scanner -Dsonar.projectVersion=$VERSION
   - node_modules/.bin/gulp --production
 after_success:
   - docker login -u $DOCKER_USR -p $DOCKER_PASS
-  - export VERSION=$(cat package.json | grep version | head -1 | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
   - export REPO=gjermshus/vsts-slackbot
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker build -f Dockerfile -t $REPO:$VERSION .; fi
   - if [ "$TRAVIS_BRANCH" == "master" ]; then docker tag $REPO:$VERSION $REPO:latest; fi
