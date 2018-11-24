@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/gjermshus/VSTS-SlackBot.svg?branch=master)](https://travis-ci.org/gjermshus/VSTS-SlackBot)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=your.project.key)](https://sonarcloud.io/dashboard/index/gjermshus_VSTS-SlackBot)
 
 
 # VSTS-SlackBot
