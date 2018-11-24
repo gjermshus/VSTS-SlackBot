@@ -9,7 +9,7 @@ install:
   - npm install
 script:
   - echo $TRAVIS_BRANCH
-  - soncar-scanner
+  - sonar-scanner
   - node_modules/.bin/gulp --production
 after_success:
   - docker login -u $DOCKER_USR -p $DOCKER_PASS
